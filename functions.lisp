@@ -1,9 +1,8 @@
 (load "globals.lisp")
 (defmacro definstruction (name args &body body)
-  `(progn 
-    (defun ,name ,args 
-      ,@(search-and-replace *symbol-map* body))
-    (push symbol-map '(,name (function ,name)))))
+  `(push  
+    (list ',name (lambda ,args ,@(search-and-replace *symbol-map* body)))
+    *symbol-map*))
 
 (defun search-and-replace (symbol-map code)
   (mapcar
