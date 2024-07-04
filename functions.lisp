@@ -41,10 +41,44 @@
 (defun ref (val)
   (afind val *symbol-map*))
 
+;; todo: perform an operation on new-value such that it will set the flags
+;; appropriately. but only when toggled
 (defun modify (symbol new-value)
+  (let ((new-value (mod new-value 256))))
   (map-into *symbol-map* 
             (lambda (x) 
               (if (eql (car x) symbol) 
                   (list symbol new-value)
                   x))
             *symbol-map*))
+
+; return format:
+; result
+; c
+; z
+(defun sub8 (x y)
+  (values
+    (mod (- x y) 256)
+    (if (> y x) 1 0)
+    (if (= y x) 1 0)))
+
+(defun add8 (x y)
+  (let ((result (mod (+ x y) 256)))
+    (values 
+      result
+      (if (> (+ x y) 255) 1 0)
+      (if (= result 0) 1 0))))
+
+(defun lsh8 (x)
+  (let ((result (logand (ash x 1) 255)))
+    (values 
+      result
+      (if (> x 127) 1 0)
+      (if (= result 0) 1 0))))
+
+(defun rsh8 (x)
+  (let ((result (logand (ash x -1) 255)))
+    (values 
+      result
+      (mod x 2) ; carry bit represents the bit that "fell off" for now
+      (if (= result 0) 1 0))))

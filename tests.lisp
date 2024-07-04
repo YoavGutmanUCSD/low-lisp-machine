@@ -10,11 +10,6 @@
            ,@body) tests))
 
 
-; (deftest test-instruction-output
-;   (let ((fn (afind 'add *symbol-map*)))
-;     (apply fn '(r1)))
-;   (format t "r0 is ~A~%" (ref 'r0)))
-
 (deftest test-symbol-replacement 
   (print (search-and-replace *symbol-map* '(r0 r1 a b c z)))
   (terpri))
