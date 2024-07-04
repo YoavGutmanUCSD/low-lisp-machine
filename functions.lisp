@@ -1,7 +1,7 @@
 (load "globals.lisp")
 (defmacro definstruction (name args &body body)
   `(push  
-    (list ',name (lambda ,args ,@(search-and-replace *symbol-map* body)))
+    (list ',name (lambda ,args ,@body))
     *symbol-map*))
 
 (defun search-and-replace (symbol-map code)
@@ -16,5 +16,7 @@
 ; required: list of length 2
 (defun afind (mem lst)
   (dolist (a lst)
-    (if (equalp (car a) mem) 
+    (if (equalp (car a) mem)
         (return (cadr a)))))
+(defun ref (val)
+  (afind val *symbol-map*))

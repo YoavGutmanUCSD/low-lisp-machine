@@ -1,34 +1,26 @@
-; registers
-(defvar *R0* 0)
-(defvar *R1* 0)
-(defvar *R2* 0)
-(defvar *R3* 0)
-(defvar *R4* 0)
-(defvar *R5* 0)
-(defvar *R6* 0)
-(defvar *R7* 0)
-
-; flags
-(defvar *z* 0)
-(defvar *c* 0)
-
-; pcntr and rom
-(defvar *next-instruction* 0)
+; rom
 (defvar *code* nil)
 
-; instruction map
-(defvar *instructions* nil)
-
 (defvar *symbol-map* '(
-  (r0 *r0*)
-  (r1 *r1*)
-  (r2 *r2*)
-  (r3 *r3*)
-  (r4 *r4*)
-  (r5 *r5*)
-  (r6 *r6*)
-  (r7 *r7*)
-  (next-instruction *next-instruction*)
-  (z *z*)
-  (c *c*)))
+  ; registers
+  (r0 0)
+  (r1 0)
+  (r2 0)
+  (r3 0)
+  (r4 0)
+  (r5 0)
+  (r6 0)
+  (r7 0)
+  ; pcntr
+  (next-instruction 0)
+  ; flags
+  (z 0)
+  (c 0)))
 
+(defun modify (symbol new-value)
+  (map-into *symbol-map* 
+            (lambda (x) 
+              (if (eql (car x) symbol) 
+                  (list symbol new-value)
+                  x))
+            *symbol-map*))
