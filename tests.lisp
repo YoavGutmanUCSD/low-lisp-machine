@@ -1,20 +1,19 @@
 (load "functions.lisp")
 (load "globals.lisp")
 (load "instruction-definitions.lisp")
+(load "interpreter.lisp")
+
 (defvar tests nil)
 (defmacro deftest (name &body body)
   `(push (lambda () 
-           (format t "Running test ~A~%" ',name)
+           (format t "[LOG]Running test ~A~%" ',name)
            ,@body) tests))
 
 
-
-
-
-(deftest test-instruction-output
-  (let ((fn (afind 'add *symbol-map*)))
-    (apply fn '(r1 r2)))
-  (format t "r0 is ~A~%" (ref 'r0)))
+; (deftest test-instruction-output
+;   (let ((fn (afind 'add *symbol-map*)))
+;     (apply fn '(r1)))
+;   (format t "r0 is ~A~%" (ref 'r0)))
 
 (deftest test-symbol-replacement 
   (print (search-and-replace *symbol-map* '(r0 r1 a b c z)))
@@ -37,8 +36,25 @@
     (print expanded)
     (terpri)))
 
+(deftest test-run-code 
+  (format t "before:~%")
+  (print *symbol-map*)
+  (terpri)
+  (let ((test-code  
+          '((sim 12)
+            (mov r1)
+            (sim 23)
+            (mov r2)
+            (sim 0)
+            (add r1)
+            (add r2))))
+    (asm-eval test-code))
+  (format t "after:~%")
+  (print *symbol-map*)
+  (terpri))
 
-(format t "Running test DEFTEST-TEST: this is how the expansion looks like:~%")
+
+(format t "[LOG]Running test DEFTEST-TEST: this is how the expansion looks like:~%")
 (print (macroexpand-1 
          '(deftest test-instruction-output
            (definstruction add (x y) (setf r0 (+ x y)))

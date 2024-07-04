@@ -17,10 +17,8 @@
   (z 0)
   (c 0)))
 
-(defun modify (symbol new-value)
-  (map-into *symbol-map* 
-            (lambda (x) 
-              (if (eql (car x) symbol) 
-                  (list symbol new-value)
-                  x))
-            *symbol-map*))
+; will only hold registers, next instruction,and flags 
+(defvar *root-map* *symbol-map*)
+
+; used for interpreter
+(defvar *current-instruction* 0)
