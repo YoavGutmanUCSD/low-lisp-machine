@@ -1,7 +1,22 @@
-(load "globals.lisp")
-
 ; macro to define instructions
+; note: 
 (defmacro definstruction (name args &body body)
+  """Define a new instruction by pushing it onto the symbol map. 
+     Implicitly increment the next-instruction register.
+  """
+  `(push  
+    (list ',name (lambda ,args
+                   (modify 'next-instruction 
+                           (+ (ref 'next-instruction) 1))
+                   ,@body))
+    *symbol-map*))
+
+; implication that the branch will change the next-instruction register
+(defmacro defbranch (name args &body body)
+  """Define a new instruction without implicitly incrementing the
+  next-instruction register. The instruction is expected to increment the
+  register itself. 
+  """
   `(push  
     (list ',name (lambda ,args ,@body))
     *symbol-map*))

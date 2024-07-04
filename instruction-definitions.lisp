@@ -1,14 +1,8 @@
-(load "globals.lisp")
-(load "functions.lisp")
-
 (definstruction add (x)
   (modify 'r0 (+ (ref 'r0) (ref x))))
 
 (definstruction sub (x y)
   (modify 'r0 (- (ref 'r0) (ref x))))
-
-(definstruction j (x) 
-  (modify 'next-instruction x))
 
 (definstruction mov (destination)
   (modify destination (ref 'r0)))
@@ -19,10 +13,13 @@
 (definstruction xor (x) 
   (modify 'r0 (logxor (ref 'r0) (ref x))))
 
-(definstruction jc (x) 
-  (when (= (ref 'c) 0) 
-    (modify 'next-instruction x)))
+(defbranch jc (x) 
+  (modify 'next-instruction (+ (ref 'next-instruction)
+                               (if (= (ref 'c) 0) x 1) )))
 
-(definstruction jz (x) 
-  (when (= (ref 'z) 0) 
-    (modify 'next-instruction x)))
+(defbranch jz (x) 
+  (modify 'next-instruction (+ (ref 'next-instruction)
+                               (if (= (ref 'z) 0) x 1) )))
+
+(defbranch j (x) 
+  (modify 'next-instruction (+ (ref 'next-instruction) 1)))
