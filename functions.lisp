@@ -17,9 +17,11 @@
   next-instruction register. The instruction is expected to increment the
   register itself. 
   """
-  `(push  
-    (list ',name (lambda ,args ,@body))
-    *symbol-map*))
+  `(progn
+    (push ',name *branch-names*)
+    (push  
+      (list ',name (lambda ,args ,@body))
+      *symbol-map*)))
 
 ; unused -- perform beta substitution over entire input code
 (defun search-and-replace (symbol-map code)
@@ -34,6 +36,7 @@
 
 ; functions to deal with symbol map 
 (defun afind (mem lst)
+  """equivalent to (cadr (assoc mem lst))"""
   (dolist (a lst)
     (if (equalp (car a) mem)
         (return (cadr a)))))

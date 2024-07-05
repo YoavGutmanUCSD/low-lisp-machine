@@ -1,6 +1,9 @@
 ; rom
 (defvar *code* nil)
 
+; branch instruction names go here 
+(defvar *branch-names* nil)
+
 (defvar *symbol-map* '(
   ; registers
   (r0 0)
@@ -19,6 +22,12 @@
 
 ; will only hold registers, next instruction,and flags 
 (defvar *root-map* *symbol-map*)
+
+; memory
+(defvar *memory*
+  (make-array '(256)
+              :initial-element 0
+              :element-type '(mod 256)))
 
 ; used for interpreter
 (defvar *current-instruction* 0)

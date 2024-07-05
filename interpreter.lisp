@@ -46,24 +46,10 @@
     (mov r1)
     (add r1)))
 
-
-(defun asm-eval (code)
-  (do 
-    ((index (ref 'next-instruction) (ref 'next-instruction)))
-    ((>= index (length code)) t)
-    (instruction-eval (nth index code)) 
-    (format t "Instruction ~D:" index)
-    (print *root-map*)
-    (terpri)
-    ))
-
   ; (map nil (lambda (x) 
   ;            (instruction-eval x)
   ;            (print *root-map*))
   ;      code) 
-
-(defun instruction-eval (instruction)
-  (apply (ref (car instruction)) (cdr instruction)))
 
 (defun string->lisp (string-in)
   (read-from-string (concatenate 'string "(" string-in ")")))
@@ -111,8 +97,3 @@
 ;   (print *root-map*)
 ;   (terpri)
 ;   (force-output))
-
-(asm-eval *hamming*)
-; (asm-eval *overflow*)
-
-; (io-loop)
