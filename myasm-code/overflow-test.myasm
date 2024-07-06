@@ -1,0 +1,6 @@
+sim 12
+mov r1
+sub r1
+sim 255
+mov r1
+add r1

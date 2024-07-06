@@ -29,5 +29,5 @@
               :initial-element 0
               :element-type '(mod 256)))
 
-; used for interpreter
+; may be used for interpreter
 (defvar *current-instruction* 0)

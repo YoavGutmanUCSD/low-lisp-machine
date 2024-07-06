@@ -1,0 +1,7 @@
+sim 12
+mov r1
+sim 23
+mov r2
+sim 0
+add r1
+add r2

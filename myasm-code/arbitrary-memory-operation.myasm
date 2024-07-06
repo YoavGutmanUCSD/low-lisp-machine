@@ -1,0 +1,6 @@
+sim 0
+mov r6
+sim 1
+mov r7
+load r6
+load r7
