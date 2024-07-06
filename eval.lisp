@@ -4,6 +4,7 @@
     ((>= index (length code)) t)
     (instruction-eval (nth index code)) 
     (format t "Instruction ~D:" index)
+    (print (nth index code))
     (print *root-map*)
     (terpri)))
 
@@ -16,3 +17,10 @@
             (lambda (x) 
               (list (car x) 0))
             *root-map*))
+
+(defun check-if-any-instruction-bad (code)
+  (format t "checking...~%" )
+  (dolist (i code)
+    (if (assoc (car i) *symbol-map*) 
+        t
+        (print i))))

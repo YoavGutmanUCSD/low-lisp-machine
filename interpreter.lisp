@@ -51,9 +51,6 @@
   ;            (print *root-map*))
   ;      code) 
 
-(defun string->lisp (string-in)
-  (read-from-string (concatenate 'string "(" string-in ")")))
-
 (defun io-loop ()
   (print *root-map*)
   (terpri)

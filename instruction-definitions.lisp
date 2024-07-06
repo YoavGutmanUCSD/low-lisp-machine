@@ -31,6 +31,9 @@
     (modify 'c c)
     (modify 'z z)))
 
+(definstruction not (x) 
+  (modify x (lognot (ref x))))
+
 ; inter-register operations 
 (definstruction mov (destination)
   (modify destination (ref 'r0)))
@@ -59,3 +62,6 @@
 
 (defbranch j (x) 
   (modify 'next-instruction (+ (ref 'next-instruction) x)))
+
+(defbranch lj (x) 
+  (modify 'next-instruction (+ (ref 'next-instruction) (ref x))))
