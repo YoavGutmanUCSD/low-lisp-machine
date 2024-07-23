@@ -50,18 +50,25 @@
   (setf (aref *memory* (ref x)) (ref 'r0)))
 
 ; branches
-(defbranch jc (x) 
-  (modify 'next-instruction (+ (ref 'next-instruction)
-                               (if (= (ref 'c) 1) x 1)))
-  (modify 'c 0))
+(defbranch jnc (x) 
+  (increment-next-instruction (if (/= (ref 'c) 1) x 1)))
 
 (defbranch jz (x) 
-  (modify 'next-instruction (+ (ref 'next-instruction)
-                               (if (= (ref 'z) 1) x 1)))
-  (modify 'z 0))
+  (increment-next-instruction (if (= (ref 'z) 1) x 1)))
 
 (defbranch j (x) 
-  (modify 'next-instruction (+ (ref 'next-instruction) x)))
+  (increment-next-instruction (ref x)))
 
 (defbranch lj (x) 
-  (modify 'next-instruction (+ (ref 'next-instruction) (ref x))))
+  (increment-next-instruction (ref x)))
+
+(defbranch mark (counter)
+  (increment-next-instruction 1)
+  (clear-counter counter))
+
+(defbranch back (counter)
+  (increment-next-instruction (- 0 (counter counter)))
+  (clear-counter counter))
+
+(definstruction done ()
+  (modify 'done t))

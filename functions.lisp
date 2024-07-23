@@ -6,8 +6,7 @@
   """
   `(push  
     (list ',name (lambda ,args
-                   (modify 'next-instruction 
-                           (+ (ref 'next-instruction) 1))
+                   (increment-next-instruction 1)
                    ,@body))
     *symbol-map*))
 
@@ -41,19 +40,34 @@
     (if (equalp (car a) mem)
         (return (cadr a)))))
 
-(defun ref (val)
-  (afind val *symbol-map*))
+(defun ref (val &optional (lst *symbol-map*))
+  (afind val lst))
 
 ;; todo: perform an operation on new-value such that it will set the flags
 ;; appropriately. but only when toggled
-(defun modify (symbol new-value)
+(defun modify (symbol new-value &optional (lst *symbol-map*))
   (let ((new-value (mod new-value 256))))
-  (map-into *symbol-map* 
+  (map-into lst 
             (lambda (x) 
               (if (eql (car x) symbol) 
                   (list symbol new-value)
                   x))
-            *symbol-map*))
+            lst))
+
+; ref for counters
+(defun counter (cntr)
+  (afind cntr *counter-map*))
+
+(defun clear-counter (cntr-num)
+  (modify cntr-num 0 *counter-map*))
+
+(defun increment-next-instruction (extent)
+  (modify 'next-instruction (+ (ref 'next-instruction) extent))
+  (map-into *counter-map* 
+            (lambda (x) 
+              (list (car x) (+ extent (cadr x))))
+            *counter-map*))
+  
 
 ; return format:
 ; result
