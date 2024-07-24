@@ -71,4 +71,4 @@
   (clear-counter counter))
 
 (definstruction done ()
-  (modify 'done t))
+  (modify 'done-flag 1))

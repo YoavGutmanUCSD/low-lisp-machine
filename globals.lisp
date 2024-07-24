@@ -27,7 +27,7 @@
   ; flags
   (z 0)
   (c 0)
-  (done nil)))
+  (done-flag 0)))
 
 (defvar *counter-map* 
   (loop for i from 0 to 15 collect (list i 0)))
