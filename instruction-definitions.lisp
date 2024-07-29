@@ -32,7 +32,7 @@
     (modify 'z z)))
 
 (definstruction not (x) 
-  (modify x (lognot (ref x))))
+  (modify x (mod (lognot (ref x)) 256)))
 
 ; inter-register operations 
 (definstruction mov (destination)

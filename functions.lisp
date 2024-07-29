@@ -73,11 +73,18 @@
 ; result
 ; c
 ; z
+; (defun sub8 (x y)
+;   (values
+;     (mod (- x y) 256)
+;     (if (> y x) 1 0)
+;     (if (= y x) 1 0)))
+
 (defun sub8 (x y)
-  (values
-    (mod (- x y) 256)
-    (if (> y x) 1 0)
-    (if (= y x) 1 0)))
+  (let ((rslt (+ x 1 (lognot y))))
+    (values 
+      (mod rslt 256)
+      (if (> rslt 255) 1 0)
+      (if (= rslt 0) 1 0))))
 
 (defun add8 (x y)
   (let ((result (mod (+ x y) 256)))
