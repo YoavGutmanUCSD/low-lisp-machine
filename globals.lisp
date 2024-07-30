@@ -42,4 +42,4 @@
               :element-type '(mod 256)))
 
 ; may be used for interpreter
-(defvar *current-instruction* 0)
+(defvar *interpreter-commands* '())

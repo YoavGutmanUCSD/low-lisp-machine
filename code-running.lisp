@@ -5,17 +5,18 @@
 (load "instruction-definitions.lisp")
 (load "eval.lisp")
 
-(defun run-code-in-file (file) 
+(defun run-code-in-file (file &optional (should-print t) ) 
   ; fill memory
   (dotimes (i 64)
-    (setf (aref *memory* i) (random 256)))
+    ; (setf (aref *memory* i) (random 256)))
+    (setf (aref *memory* i) i)) 
 
   ; run code
   (let* ((code (read-code-file file))
          (invalid (and code (find-invalid code))))
     (if (and code
              (null invalid)
-             (asm-eval code))
+             (asm-eval code :should-print should-print))
         (progn 
           (format t "Done.")
           0)
@@ -32,4 +33,4 @@
   ; return success 0
   )
 
-(run-code-in-file (second *posix-argv*))
+(run-code-in-file (second *posix-argv*) (not (string= (third *posix-argv*) "noprint")))

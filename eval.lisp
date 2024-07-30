@@ -1,11 +1,11 @@
 (defvar *line-numbers* nil)
-(defun asm-eval (code &key (how-many nil how-many-p))
+(defun asm-eval (code &key (how-many nil how-many-p) (should-print t))
   (do 
     ((index (ref 'next-instruction) (ref 'next-instruction))
      (instrs-run 0 (1+ instrs-run)))
     ((or (>= index (length code)) (= (ref 'done-flag) 1)) t)
     (instruction-eval (nth index code))
-    (print-info index (nth index code))
+    (and should-print (print-info index (nth index code)))
     (when how-many-p
       (setf instrs-run 0)
       (or (y-or-n-p "~D instructions run. Continue?~%" how-many)

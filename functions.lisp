@@ -22,6 +22,17 @@
       (list ',name (lambda ,args ,@body))
       *symbol-map*)))
 
+(defmacro definterpreterfn (name args &body body) 
+  `(progn
+    (push ',name *interpreter-commands*)
+    (push  
+      (list ',name (lambda ,args
+                     (increment-next-instruction 1)
+                     ,@body))
+      *symbol-map*)))
+
+  
+
 ; unused -- perform beta substitution over entire input code
 (defun search-and-replace (symbol-map code)
   (mapcar

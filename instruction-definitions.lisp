@@ -51,13 +51,15 @@
 
 ; branches
 (defbranch jnc (x) 
-  (increment-next-instruction (if (/= (ref 'c) 1) x 1)))
+  (increment-next-instruction (if (/= (ref 'c) 1) x 1))
+  (modify 'c 0))
 
 (defbranch jz (x) 
-  (increment-next-instruction (if (= (ref 'z) 1) x 1)))
+  (increment-next-instruction (if (= (ref 'z) 1) x 1))
+  (modify 'z 0))
 
 (defbranch j (x) 
-  (increment-next-instruction (ref x)))
+  (increment-next-instruction x))
 
 (defbranch lj (x) 
   (increment-next-instruction (ref x)))
@@ -72,3 +74,12 @@
 
 (definstruction done ()
   (modify 'done-flag 1))
+
+(definstruction $break (name) 
+  (and
+    *can-break*
+   (unless (y-or-n-p "Breakpoint [~A] encountered. Continue?~%" (string-upcase name))
+     (modify 'done-flag 1))))
+(defvar *can-break* t)
+(definstruction $disable-break ()
+  (setf *can-break* nil))
