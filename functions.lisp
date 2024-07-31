@@ -93,7 +93,7 @@
     (values 
       (mod rslt 256)
       (if (> rslt 255) 1 0)
-      (if (= rslt 0) 1 0))))
+      (if (= (mod rslt 256) 0) 1 0))))
 
 (defun add8 (x y)
   (let ((result (mod (+ x y) 256)))
