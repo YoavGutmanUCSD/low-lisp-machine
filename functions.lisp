@@ -31,8 +31,6 @@
                      ,@body))
       *symbol-map*)))
 
-  
-
 ; unused -- perform beta substitution over entire input code
 (defun search-and-replace (symbol-map code)
   (mapcar
@@ -91,7 +89,7 @@
 ;     (if (= y x) 1 0)))
 
 (defun sub8 (x y)
-  (let ((rslt (+ x 1 (lognot y))))
+  (let ((rslt (+ x 1 (mod (lognot y) 256))))
     (values 
       (mod rslt 256)
       (if (> rslt 255) 1 0)
