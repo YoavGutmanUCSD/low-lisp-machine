@@ -31,6 +31,12 @@
                      ,@body))
       *symbol-map*)))
 
+; this function runs on two args only
+(defmacro defpreprocessfn (name args pass-num &body body)
+  `(push 
+    (list ',name (lambda ,args ,@body))
+    *preprocess-fns*))
+
 ; unused -- perform beta substitution over entire input code
 (defun search-and-replace (symbol-map code)
   (mapcar
@@ -115,3 +121,24 @@
       result
       (mod x 2) ; carry bit represents the bit that "fell off" for now
       (if (= result 0) 1 0))))
+
+(defun label-pass (code)
+  ; label-aliases: list of (symbol label-name line-number)
+  (do*
+    ((index 0 (1+ index))
+     (curr-code code (cdr code))
+     (new-code nil)
+     (curr-new-sym (gensym) (gensym))
+     (label-aliases)
+     (new-vars))
+    ((null curr-code) (reverse new-code))
+    (case (caar curr-code)
+      ('sim 
+       (push curr-new-sym label-aliases)
+       ()
+       )
+      ('lj 
+       )
+      (t (push (car curr-code) new-code))
+      )
+    ))

@@ -43,3 +43,8 @@
 
 ; may be used for interpreter
 (defvar *interpreter-commands* '())
+(defvar *constants* '())
+(defvar *labels* '())
+(defvar *interpreter-state* 'NORMAL)
+(defvar *can-break* t)
+(defvar *preprocess-fns* '())

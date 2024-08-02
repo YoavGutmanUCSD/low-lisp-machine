@@ -20,14 +20,14 @@
 (definstruction lsh (x)
   (multiple-value-bind (result c z)
     (lsh8 (ref x))
-    (modify x result)
+    (modify x (mod (+ result (ref 'c)) 256))
     (modify 'c c)
     (modify 'z z)))
 
 (definstruction rsh (x)
   (multiple-value-bind (result c z)
     (rsh8 (ref x))
-    (modify x result)
+    (modify x (mod (+ result (ash (ref 'c) 7)) 256))
     (modify 'c c)
     (modify 'z z)))
 
@@ -75,11 +75,35 @@
 (definstruction done ()
   (modify 'done-flag 1))
 
-(definstruction $break (name) 
+(definterpreterfn $break (name) 
   (and
     *can-break*
    (unless (y-or-n-p "Breakpoint [~A] encountered. Continue?~%" (string-upcase name))
      (modify 'done-flag 1))))
-(defvar *can-break* t)
-(definstruction $disable-break ()
+
+(definterpreterfn $disable-break ()
   (setf *can-break* nil))
+
+(definterpreterfn $define (name val)
+  (push (list name val)
+        *constants*))
+
+(definterpreterfn $label (name)
+  (push name *labels*))
+
+(defpreprocessfn jnc (x)
+  (cond
+    ((numberp x)
+     `(jnc ,x))
+    ((assoc x *labels*)
+     
+     )
+    ((assoc x *constants*)
+     `(jnc ,(cadr (assoc x *constants*))))
+    (t (error "Bad argument to jnc"))
+
+    ))
+
+(definterpreterfn $begin ())
+
+(definterpreterfn $end ())
