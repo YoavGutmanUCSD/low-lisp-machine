@@ -119,7 +119,7 @@
   (let ((result (logand (ash x -1) 255)))
     (values 
       result
-      (mod x 2) ; carry bit represents the bit that "fell off" for now
+      (logand x 1) ; carry bit represents the bit that "fell off" for now
       (if (= result 0) 1 0))))
 
 (defun label-pass (code)

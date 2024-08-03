@@ -14,7 +14,8 @@
     (modify 'z z)))
 
 (definstruction xor (x) 
-  (modify 'r0 (logxor (ref 'r0) (ref x))))
+  (modify 'r0 (logxor (ref 'r0) (ref x)))
+  (modify 'z (if (= 0 (ref 'r0)) 1 0)))
 
 ; in-place arithmetic
 (definstruction lsh (x)
