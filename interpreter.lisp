@@ -40,7 +40,12 @@
                    (progn
                      (setf state 'NORMAL)
                      (format t "Running code block...~%")
-                     (asm-eval (reverse *code*))
+                     (map nil 
+                          (lambda (x)
+                            (instruction-eval x)
+                            (print-info (ref 'next-instruction) x))
+                          (reverse *code*))
+                     ; (asm-eval (reverse *code*))
                      (format t "DONE")
                      (setf start-code-index (+ (length *code*) start-code-index))
                      (setf *code* nil))
