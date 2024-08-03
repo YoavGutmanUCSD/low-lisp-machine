@@ -61,7 +61,6 @@
 ;; todo: perform an operation on new-value such that it will set the flags
 ;; appropriately. but only when toggled
 (defun modify (symbol new-value &optional (lst *symbol-map*))
-  (let ((new-value (mod new-value 256))))
   (map-into lst 
             (lambda (x) 
               (if (eql (car x) symbol) 
