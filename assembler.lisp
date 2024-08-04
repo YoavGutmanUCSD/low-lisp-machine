@@ -17,6 +17,7 @@
   (assert (< int (expt 2 dim)))
   (let ((int-written (write-to-string int :base 2)))
     ; thanks stackoverflow
+    ; https://stackoverflow.com/questions/24754552/repeat-string-character-with-format
     (format nil 
             "~A~A"
             (format nil "~v@{~A~:*~}" 
