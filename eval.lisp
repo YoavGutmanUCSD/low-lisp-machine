@@ -74,3 +74,9 @@
                 (string->lisp (until-comment-sequence line))))
           (if code-line 
               (push code-line code)))))))
+
+(defun val-at (ind &optional (precision 2))
+  (if (<= precision 0)
+      0
+      (+ (ash (aref *memory* ind) (* 8 (1- precision)))
+         (val-at (1+ ind) (1- precision)))))
